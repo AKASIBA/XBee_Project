@@ -208,7 +208,7 @@ def main():
                 xbee.transmit(addr_coordinator, mes_c)
                 time.sleep(5)
                 xbee.transmit(addr_coordinator, mes_a)
-            except OSError as e:
+            except OSError as e:#siba
                 print(e)
 
             if now_time == 35340 and s_w == 0:
