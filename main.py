@@ -17,54 +17,54 @@ print(sl)
 time.sleep(1)
 
 drv = ["""&{'temp':'25','o_time':'07:00','c_time':'16:00','select':'21','wall':'21','everyday':'10',\
-'remote':'10','button':'01'}"""]
-drv.append("""<body><h1><strong>くるファミ　AceDX</strong></h1><form name="Form" method="POST">\
-<input name="cont_dev" value='""" + sl + """' hidden>""")
-drv.append("""<p><input type="radio" id="select1" name="select" value='21' &> 手動\
-<input type="radio" id="select2" name="select"  value='22' &> 自動</p>""")
-drv.append(
-    """<p><button class="button" name="button" value='02' type="submit" id="button"><strong>開</strong></button>""")
-drv.append("""<button class="button" name="button" value='03' type="submit" id="button"><strong>閉</strong></button>\
- <button class="button" name="button" value='04' type="submit" id="button"><strong>停止</strong></button></p>""")
-drv.append("""<input type="radio" name="wall" value="21" &>\
-温度制御<input type="radio" name="wall" value="22" &> 時間制御</p>""")
-drv.append("""<p>設定温度<input type="number" id="text" name="temp" value= $ min="0" max="35"> ℃</p>""")
-drv.append("""<p><label>開く時刻  : <input type="time" id='time' name='o_time' value= $ required></p>\
-<p><label>閉る時刻  : <input type="time" id='time' name='c_time' value= $ required></p>""")
-drv.append("""<p><label>毎日同時刻に実行 :<input type="checkbox" name="everyday" id="text" value='11' &></label></p>""")
-drv.append("""<p><label>リモート操作有効 :<input type="checkbox" name="remote" id="text" value='11' &></label></p>\
-<p><button class="button" name="button" value='01' type="submit" id="button"><strong>実行</strong></button>""")
-drv.append("""<button class="button" name="control" value='CANCEL' type="submit" id="button"><strong>戻る\
-</strong></button></p></body></html>""")
+'remote':'10','button':'01'}""", """<body><h1><strong>くるファミ　AceDX</strong></h1><form name="Form" method="POST">\
+<input name="cont_dev" value='""" + sl + """' hidden>""", """<p><input type="radio" id="select1" name="select" \
+value='21' &> 手動<input type="radio" id="select2" name="select"  value='22' &> 自動</p>""",
+       """<p><button class="button" name="button" value='02' type="submit" id="button"><strong>開</strong></button>""",
+       """<button class="button" name="button" value='03' type="submit" id="button"><strong>閉</strong></button>\
+ <button class="button" name="button" value='04' type="submit" id="button"><strong>停止</strong></button></p>""",
+       """<input type="radio" name="wall" value="21" &>\
+温度制御<input type="radio" name="wall" value="22" &> 時間制御</p>""",
+       """<p>設定温度<input type="number" id="text" name="temp" value= $ min="0" max="35"> ℃</p>""", """<p>\
+       <label>開く時刻  : <input type="time" id='time' name='o_time' value= $ required></p>\
+<p><label>閉る時刻  : <input type="time" id='time' name='c_time' value= $ required></p>""",
+       """<p><label>毎日同時刻に実行 :<input type="checkbox" name="everyday" id="text" value='11' &></label></p>""", """<p>\
+       <label>リモート操作有効 :<input type="checkbox" name="remote" id="text" value='11' &></label></p>\
+<p><button class="button" name="button" value='01' type="submit" id="button"><strong>実行</strong></button>""",
+       """<button class="button" name="control" value='CANCEL' type="submit" id="button"><strong>戻る\
+</strong></button></p></body></html>""", '?',
+       """>if 'temp' in form:exe_dict['temp'] = '{:0>2}'.format(form.getvalue('temp'))@@""",
+       """>if 'o_time' in form:exe_dict['o_time'] = '{:0>2}'.format(form.getvalue('o_time'))@@\
+if 'c_time' in form:exe_dict['c_time'] = '{:0>2}'.format(form.getvalue('c_time'))@@""",
+       """>exe_dict['select'] = '{:0>2}'.format(form.getvalue('select')) if form.getvalue('select') else '21'@@\
+exe_dict['wall'] = '{:0>2}'.format(form.getvalue('wall')) if form.getvalue('wall') else '21'@@""",
+       """>exe_dict['everyday'] = '{:0>2}'.format(form.getvalue('everyday'))if form.getvalue('everyday')else '10' @@""",
+       """>exe_dict['remote'] = '{:0>2}'.format(form.getvalue('remote')) if form.getvalue('remote') else '10'@@""",
+       """>if 'button' in form:exe_dict['button'] = '{:0>2}'.format(form.getvalue('button'))@@""", '@']
+
+
 # drv.append("""<script>function sel1(ischecked){if(ischecked == true){document.getElementById("se1").disabled = false;\
-# document.getElementById("se2").disabled = true;} else {document.getElementById("se1").disabled = true;document.getElementById("se2").disabled = false; }}""")
+# document.getElementById("se2").disabled = true;} else {document.getElementById("se1").disabled = \
+# true;document.getElementById("se2").disabled = false; }}""")
 # drv.append("""<script>function sel2(ischecked){if(ischecked == true){\
 #            document.getElementById("se2").disabled = false;\
 #            document.getElementById("se1").disabled = true;} else {""")
 # drv.append("""<script>document.getElementById("se2").disabled = true;\
 #            document.getElementById("se1").disabled = false;}}</script></body></html>""")
-drv.append('?')
-drv.append(""">if 'temp' in form:exe_dict['temp'] = '{:0>2}'.format(form.getvalue('temp'))@@""")
-drv.append(""">if 'o_time' in form:exe_dict['o_time'] = '{:0>2}'.format(form.getvalue('o_time'))@@\
-if 'c_time' in form:exe_dict['c_time'] = '{:0>2}'.format(form.getvalue('c_time'))@@""")
-drv.append(""">exe_dict['select'] = '{:0>2}'.format(form.getvalue('select')) if form.getvalue('select') else '21'@@\
-exe_dict['wall'] = '{:0>2}'.format(form.getvalue('wall')) if form.getvalue('wall') else '21'@@""")
-drv.append(
-    """>exe_dict['everyday'] = '{:0>2}'.format(form.getvalue('everyday')) if form.getvalue('everyday')else '10' @@""")
-drv.append(""">exe_dict['remote'] = '{:0>2}'.format(form.getvalue('remote')) if form.getvalue('remote') else '10'@@""")
-drv.append(""">if 'button' in form:exe_dict['button'] = '{:0>2}'.format(form.getvalue('button'))@@""")
-drv.append('@')
+
 
 def xb_join():
     while True:
         status = xbee.atcmd('AI')  # network_join
         print('.', end='')
         if status == 0x00:
-            status = 0x01
+            # status = 0x01
             print('\nJoin!')
             break
         xbee.atcmd('CB', 0x01)  # commissioning_1
         time.sleep(2)
+
+
 def pin_ini():
     xbee.atcmd('d2', OFF)
     xbee.atcmd('d3', OFF)
@@ -90,12 +90,6 @@ def send_driver():
 
 
 def main():
-    try:
-        xbee.transmit(addr_coordinator, 'S')
-    except OSError as e:
-        print(e)
-        xb_join()
-        xbee.transmit(addr_coordinator, 'S')
     pin_ini()
     now_time = 0
     s_time = 0
@@ -114,7 +108,7 @@ def main():
     s_w = 0
     mes_c = 'C0100001リモート　OFF'
     conf = ''
-    c = 0
+    c1 = True
     w_s = True
     time_w = 0
     k_time = 0
@@ -122,10 +116,8 @@ def main():
         f = uio.open('conf.txt', mode='r')
         conf = f.read()
         f.close()
-        c = 1
-    except OSError as e:
-        print(e)
-    print(conf)
+    except OSError as e2:
+        print('初期化ファイル読み込み失敗', e2)
     while True:
         t = time.ticks_ms()
         if t0 <= t or t0 - t >= 3000:  #
@@ -138,6 +130,7 @@ def main():
             s_time = int(now_time / 60)
         temp_a = temp.read() * 0.030525 - 48.3
         command = packet_receive(conf)
+        conf = ''
         if command:
             print(command)
             if command == 'sibainu':
@@ -145,6 +138,7 @@ def main():
             elif command[0:2] == '99':
                 now_time = int(command[-6:])
                 s_time = int(now_time / 60)
+                c1 = False
             else:
                 try:
                     now_time = int(command[-6:])
@@ -158,19 +152,22 @@ def main():
                     remote = command[18:20]
                     button = command[20:22]
                     d = True
-                except Exception as e:
-                    print(e)
-            if conf:
-                command = conf
-                conf = ''
-                if c == 0:
                     try:
                         os.remove('conf.txt')
-                    except OSError as e:
-                        print(e)
+                    except OSError as e4:
+                        print('初期化ファイル消去失敗', e4)
                     f = uio.open('conf.txt', mode='w')
                     f.write(command)
                     f.close()
+                    if c1:
+                        try:
+                            time.sleep(5)
+                            xbee.transmit(addr_coordinator, 'S')
+                            print('time calibration')
+                        except OSError as e2:
+                            print('時刻取得失敗', e2)
+                except Exception as e3:
+                    print('コマンド代入エラー', e3)
             if remote == '11':
                 xbee.atcmd('d6', ON)
                 mes_c = 'リモート　ON'
@@ -189,7 +186,7 @@ def main():
                         print('OFF')
                 elif select == '22':
                     if wall == '21':
-                        mes_c = "C0100001巻上温度:" + command[0:2] + '℃'
+                        mes_c = "C0100001巻上温度:" + str(temp_c) + '℃'
 
                     if wall == '22' and (d or everyday == '11'):
                         mes_c = "C0100001巻上時間:" + '(' + command[2:7] + '-' + command[7:12] + ')'
@@ -197,8 +194,6 @@ def main():
             else:
                 xbee.atcmd('d6', OFF)
                 mes_c = 'C0100001リモート　OFF'
-            c = 0
-
         if p_time <= now_time:
             p_time = now_time + 30
             if remote == '11' and select == '22':  # 自動
@@ -208,7 +203,7 @@ def main():
                         xbee.atcmd('d2', ON)
                         print('o_open')
                         if w_s:
-                            time_w = now_time +5
+                            time_w = now_time + 5
                             w_s = False
                         if time_w <= now_time:
                             xbee.atcmd('d2', OFF)
@@ -219,7 +214,7 @@ def main():
                         xbee.atcmd('d3', ON)
                         print('o_close')
                         if w_s:
-                            time_w = now_time +5
+                            time_w = now_time + 5
                             w_s = False
                         if time_w <= now_time:
                             xbee.atcmd('d3', OFF)
@@ -248,26 +243,26 @@ def main():
             print(s_time)
             print(mes_c)
             print(mes_a)
-            print('o:', o_time, 'c:', c_time) #
+            print('o:', o_time, 'c:', c_time)  #
             try:
                 xbee.transmit(addr_coordinator, mes_c)
                 time.sleep(5)
                 xbee.transmit(addr_coordinator, mes_a)
-            except OSError as e:
-                print(e)
+            except OSError as e5:
+                print('メッセージ送信失敗', e5)
 
             if now_time == 35340 and s_w == 0:
                 s_w = 1
                 try:
                     xbee.transmit(addr_coordinator, 'S')
                     print('time calibration')
-                except OSError as e:
-                    print(e)
+                except OSError as e6:
+                    print('時刻取得失敗', e6)
 
 
 try:
     main()
 except Exception as e:
     print('other', e)
-    time.sleep(20)
+    time.sleep(10)
     machine.reset()
