@@ -55,7 +55,16 @@ drv.append(""">exe_dict['remote'] = '{:0>2}'.format(form.getvalue('remote')) if 
 drv.append(""">if 'button' in form:exe_dict['button'] = '{:0>2}'.format(form.getvalue('button'))@@""")
 drv.append('@')
 
-
+def xb_join():
+    while True:
+        status = xbee.atcmd('AI')  # network_join
+        print('.', end='')
+        if status == 0x00:
+            status = 0x01
+            print('\nJoin!')
+            break
+        xbee.atcmd('CB', 0x01)  # commissioning_1
+        time.sleep(2)
 def pin_ini():
     xbee.atcmd('d2', OFF)
     xbee.atcmd('d3', OFF)
@@ -81,7 +90,12 @@ def send_driver():
 
 
 def main():
-    xbee.transmit(addr_coordinator, 'S')
+    try:
+        xbee.transmit(addr_coordinator, 'S')
+    except OSError as e:
+        print(e)
+        xb_join()
+        xbee.transmit(addr_coordinator, 'S')
     pin_ini()
     now_time = 0
     s_time = 0
@@ -101,6 +115,9 @@ def main():
     mes_c = 'C0100001リモート　OFF'
     conf = ''
     c = 0
+    w_s = True
+    time_w = 0
+    k_time = 0
     try:
         f = uio.open('conf.txt', mode='r')
         conf = f.read()
@@ -143,7 +160,6 @@ def main():
                     d = True
                 except Exception as e:
                     print(e)
-                    print('SIBAINU', s_time)
             if conf:
                 command = conf
                 conf = ''
@@ -173,7 +189,7 @@ def main():
                         print('OFF')
                 elif select == '22':
                     if wall == '21':
-                        mes_c = "C0100001巻上温度:" + temp_c + '℃'
+                        mes_c = "C0100001巻上温度:" + command[0:2] + '℃'
 
                     if wall == '22' and (d or everyday == '11'):
                         mes_c = "C0100001巻上時間:" + '(' + command[2:7] + '-' + command[7:12] + ')'
@@ -187,18 +203,28 @@ def main():
             p_time = now_time + 30
             if remote == '11' and select == '22':  # 自動
                 if wall == '21':  # 温度
-                    if temp_c <= temp_a:
+                    if temp_c <= temp_a and k_time <= s_time:
                         xbee.atcmd('d3', OFF)
                         xbee.atcmd('d2', ON)
                         print('o_open')
-                        time.sleep(5)
-                        xbee.atcmd('d2', OFF)
-                    elif temp_c >= temp_a + 5:  # ヒステリシス　5
+                        if w_s:
+                            time_w = now_time +5
+                            w_s = False
+                        if time_w <= now_time:
+                            xbee.atcmd('d2', OFF)
+                            w_s = True
+                            k_time = s_time + 5
+                    elif temp_c >= temp_a + 5 and k_time <= s_time:  # ヒステリシス　5
                         xbee.atcmd('d2', OFF)
                         xbee.atcmd('d3', ON)
                         print('o_close')
-                        time.sleep(5)
-                        xbee.atcmd('d3', OFF)
+                        if w_s:
+                            time_w = now_time +5
+                            w_s = False
+                        if time_w <= now_time:
+                            xbee.atcmd('d3', OFF)
+                            w_s = True
+                            k_time = s_time + 5
                 elif wall == '22' and (d or everyday == '11'):  # 時間
                     if o_time <= s_time <= c_time:
                         xbee.atcmd('d3', OFF)
