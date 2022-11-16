@@ -250,7 +250,14 @@ def main():
                 xbee.transmit(addr_coordinator, mes_a)
             except OSError as e5:
                 print('メッセージ送信失敗', e5)
-
+            if (s_time % 10) == 0:
+                time.sleep(5)
+                try:
+                    xbee.transmit(addr_coordinator, 'S')
+                    print('time calibration')
+                except OSError as e2:
+                    print('時刻取得失敗', e2)
+        """       
             if now_time == 35340 and s_w == 0:
                 s_w = 1
                 try:
@@ -258,6 +265,7 @@ def main():
                     print('time calibration')
                 except OSError as e6:
                     print('時刻取得失敗', e6)
+        """
 
 
 try:
