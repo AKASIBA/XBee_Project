@@ -229,7 +229,6 @@ def main():
                         print('time_close')
                         p = True
                         o = True
-                    print('off', off_time, 'tic', time.ticks_ms())
                     if off_time <= time.ticks_ms() and o:
                         xbee.atcmd('d2', OFF)
                         xbee.atcmd('d3', OFF)
@@ -244,7 +243,6 @@ def main():
             print(s_time)
             print(mes_c)
             print(mes_a)
-            print('o:', o_time, 'c:', c_time)
             try:
                 xbee.transmit(addr_coordinator, mes_c)
                 xbee.transmit(addr_coordinator, mes_a)
@@ -264,5 +262,5 @@ try:
     xb_join()
     main()
 except:
-    time.sleep(5)
+    time.sleep(2)
     machine.reset()
