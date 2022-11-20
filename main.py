@@ -260,8 +260,9 @@ def main():
                 print('time calibration')
 
 
-# try:
-main()
-# except:
-#    time.sleep(3)
-#    machine.reset()
+try:
+    xb_join()
+    main()
+except:
+    time.sleep(5)
+    machine.reset()
